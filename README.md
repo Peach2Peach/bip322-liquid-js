@@ -3,15 +3,11 @@
 ![Unit Test Status](https://github.com/ACken2/bip322-js/actions/workflows/unit_test.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/ACken2/bip322-js/badge.svg?branch=main)](https://coveralls.io/github/ACken2/bip322-js?branch=main)
 
-A Javascript library that provides utility functions related to the BIP-322 signature scheme.
+A Javascript library that provides utility functions related to the BIP-322 signature scheme for liquid.
 
 ## Limitations
 
-Only P2PKH, P2SH-P2WPKH, P2WPKH, and single-key-spend P2TR are supported in this library.
-
-## Documentation
-
-Available at https://acken2.github.io/bip322-js/
+Only P2WPKH, P2PKH, P2WSH, P2SH are supported in this library.
 
 ## Supported Features
 

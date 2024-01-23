@@ -1,7 +1,7 @@
 {
-    "name": "bip322-js",
+    "name": "bip322-liquid-js",
     "version": "1.1.0",
-    "description": "A Javascript library that provides utility functions related to the BIP-322 signature scheme",
+    "description": "A Javascript library that provides utility functions related to the BIP-322 signature scheme for liquid",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
@@ -9,17 +9,19 @@
         "doc": "typedoc src/index.ts",
         "prepack": "npm run build",
         "test": "ts-mocha 'test/**/*.test.ts'",
+        "lint": "eslint './**/*.{js,ts}'",
         "test:coverage": "nyc --reporter=text --reporter=text-summary --reporter=lcov npm test"
     },
     "keywords": [
         "bip322",
         "bitcoinjs",
+        "liquidjs",
         "javascript",
         "typescript",
         "no-WASM"
     ],
-    "author": "Ken Sze <acken2@outlook.com>",
-    "repository": "github:ACken2/bip322-js",
+    "author": "Peac Sàrl <development@peachbitcoin.com>",
+    "repository": "github:Peach2Peach/bip322-liquid-js",
     "license": "MIT",
     "devDependencies": {
         "@types/chai": "^4.3.5",
@@ -36,10 +38,16 @@
     },
     "dependencies": {
         "@bitcoinerlab/secp256k1": "^1.0.2",
-        "bitcoinjs-lib": "^6.1.1",
+        "@typescript-eslint/eslint-plugin": "^6.19.1",
+        "@typescript-eslint/parser": "^6.19.1",
+        "bitcoinjs-lib": "^6.1.5",
         "bitcoinjs-message": "^2.2.0",
         "ecpair": "^2.1.0",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.1.3",
         "fast-sha256": "^1.3.0",
+        "liquidjs-lib": "^6.0.2-liquid.32",
         "secp256k1": "^5.0.0"
     }
 }
