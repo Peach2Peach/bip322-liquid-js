@@ -101,11 +101,13 @@ describe('Address Test', () => {
   describe('Witness Stack Recognition Functions', () => {
     // Taken from transaction 0b1941022852684d36650aff93740a4c8a0e70520f59128fa8edb23417ea7529
     const witnessP2WPKH = [
+      // eslint-disable-next-line max-len
       Buffer.from('3045022100a611fcb4be51f4866e0386f44fdd83498735dd5ff37aa447ffc6243834804d1502202cf5cda352a887e0b02642492471268ecd9cb1e4ac489d047bf92838e14aaece01', 'hex'),
       Buffer.from('03d673188f8bafafc9b2819eb007901c3aef025a8fa8f74e2510f0a6c12221011c', 'hex'),
     ]
     // Taken from transaction 4221ff28411a87e6d412458689c471b875dd43aca7d02c7fb7c7331855581434
     const witnessP2WSH = [
+      // eslint-disable-next-line max-len
       Buffer.from('3045022100c931f9c01fe6f4e4f67c55644764659289d8d4cc723fe82dd2b97fbfda064bec02200dfd586f58c9edba874e0cef66e9fe91e7aa7a6cddd6a1f572efb66fe9caef2e01', 'hex'),
       Buffer.from('210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ac', 'hex'),
     ]

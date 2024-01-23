@@ -13,7 +13,8 @@ class BIP322 {
   /**
      * Compute the message hash as specified in the BIP-322.
      * The standard is specified in BIP-340 as:
-     *      The function hashtag(x) where tag is a UTF-8 encoded tag name and x is a byte array returns the 32-byte hash SHA256(SHA256(tag) || SHA256(tag) || x).
+     * The function hashtag(x) where tag is a UTF-8 encoded tag name
+     * and x is a byte array returns the 32-byte hash SHA256(SHA256(tag) || SHA256(tag) || x).
      * @param message Message to be hashed
      * @returns Hashed message
      */

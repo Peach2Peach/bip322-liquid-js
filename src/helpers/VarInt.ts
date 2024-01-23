@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * Class that implement variable length integer (VarInt) in Javascript.
  * Reference: https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer

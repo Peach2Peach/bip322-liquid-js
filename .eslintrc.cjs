@@ -106,7 +106,7 @@ module.exports = {
     'no-array-constructor': 'error',
     'no-sparse-arrays': 'off',
     'no-await-in-loop': 'error',
-    'no-bitwise': 'error',
+    'no-bitwise': 'off',
     'no-caller': 'error',
     'no-confusing-arrow': 'off',
     'no-console': 'error',
@@ -136,7 +136,7 @@ module.exports = {
     'no-loop-func': 'error',
     'no-loss-of-precision': 'error',
     'no-magic-numbers': [
-      'error',
+      'warn',
       {
         ignoreArrayIndexes: true,
         ignoreClassFieldInitialValues: true,
@@ -215,7 +215,7 @@ module.exports = {
     'padding-line-between-statements': 'error',
     'prefer-arrow-callback': 'error',
     'prefer-const': 'error',
-    'prefer-destructuring': 'error',
+    'prefer-destructuring': 'off',
     'prefer-exponentiation-operator': 'error',
     'prefer-named-capture-group': 'off',
     'prefer-numeric-literals': 'error',

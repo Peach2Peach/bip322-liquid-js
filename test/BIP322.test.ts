@@ -4,10 +4,12 @@ import { expect } from 'chai'
 import ECPairFactory from 'ecpair'
 import { BIP322 } from '../src'
 
+// Test vector listed at
+// https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki#user-content-Transaction_Hashes
+// https://github.com/bitcoin/bitcoin/blob/29b28d07fa958b89e1c7916fda5d8654474cf495/src/test/util_tests.cpp#L2713
 describe('BIP322 Test', () => {
 
   it('Produce correct message hash', () => {
-    // Test vector listed at https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki#user-content-Message_hashing
     const emptyStringHash = BIP322.hashMessage('')
     const helloWorldHash = BIP322.hashMessage('Hello World')
 
@@ -18,7 +20,6 @@ describe('BIP322 Test', () => {
   })
 
   it('Draft correct BIP-322 toSpend transaction', () => {
-    // Test vector listed at https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki#user-content-Transaction_Hashes
     // Obtain the script public key
     const scriptPubKey = bitcoin.payments.p2wpkh({
       address: 'bc1q9vza2e8x573nczrlzms0wvx3gsqjx7vavgkx0l',
@@ -29,12 +30,13 @@ describe('BIP322 Test', () => {
     // Draft a toSpend transaction with Hello World
     const helloWorldToSpendTx = BIP322.buildToSpendTx('Hello World', scriptPubKey)
 
+    // eslint-disable-next-line max-len
     expect(emptyStringToSpendTx.getId().toLowerCase()).to.equal('c5680aa69bb8d860bf82d4e9cd3504b55dde018de765a91bb566283c545a99a7')
+    // eslint-disable-next-line max-len
     expect(helloWorldToSpendTx.getId().toLowerCase()).to.equal('b79d196740ad5217771c1098fc4a4b51e0535c32236c71f1ea4d61a2d603352b')
   })
 
   it('Draft correct BIP-322 toSign transaction', () => {
-    // Test vector listed at https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki#user-content-Transaction_Hashes
     // Obtain the script public key
     const scriptPubKey = bitcoin.payments.p2wpkh({
       address: 'bc1q9vza2e8x573nczrlzms0wvx3gsqjx7vavgkx0l',
@@ -58,12 +60,13 @@ describe('BIP322 Test', () => {
     const helloWorldToSignTxSigned = helloWorldToSignTx.signAllInputs(testPrivateKey).finalizeAllInputs()
       .extractTransaction()
     // Assert the transaction ID is as expected
+    // eslint-disable-next-line max-len
     expect(emptyStringToSignTxSigned.getId().toLowerCase()).to.equal('1e9654e951a5ba44c8604c4de6c67fd78a27e81dcadcfe1edf638ba3aaebaed6')
+    // eslint-disable-next-line max-len
     expect(helloWorldToSignTxSigned.getId().toLowerCase()).to.equal('88737ae86f2077145f93cc4b153ae9a1cb8d56afa511988c149c5c8c9d93bddf')
   })
 
   it('Encode signed BIP-322 PSBT into signature correctly', () => {
-    // Test vector listed at https://github.com/bitcoin/bitcoin/blob/29b28d07fa958b89e1c7916fda5d8654474cf495/src/test/util_tests.cpp#L2713
     // Obtain the script public key
     const scriptPubKey = bitcoin.payments.p2wpkh({
       address: 'bc1q9vza2e8x573nczrlzms0wvx3gsqjx7vavgkx0l',
@@ -80,11 +83,11 @@ describe('BIP322 Test', () => {
 
     const signature = BIP322.encodeWitness(toSignTxSigned)
 
+    // eslint-disable-next-line max-len
     expect(signature).to.equal('AkgwRQIhAOzyynlqt93lOKJr+wmmxIens//zPzl9tqIOua93wO6MAiBi5n5EyAcPScOjf1lAqIUIQtr3zKNeavYabHyR8eGhowEhAsfxIAMZZEKUPYWI4BruhAQjzFT8FSFSajuFwrDL1Yhy')
   })
 
   it('Throw error when trying to encode witness from unsigned PSBT', () => {
-    // Test vector listed at https://github.com/bitcoin/bitcoin/blob/29b28d07fa958b89e1c7916fda5d8654474cf495/src/test/util_tests.cpp#L2713
     // Obtain the script public key
     const scriptPubKey = bitcoin.payments.p2wpkh({
       address: 'bc1q9vza2e8x573nczrlzms0wvx3gsqjx7vavgkx0l',

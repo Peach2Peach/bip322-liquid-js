@@ -9,7 +9,9 @@ describe('BIP137 Test', () => {
   })
   it('Can distinguish between BIP-137 and BIP-322 signature', () => {
     const bip137Sig = 'IAtVrymJqo43BCt9f7Dhl6ET4Gg3SmhyvdlW6wn9iWc9PweD7tNM5+qw7xE9/bzlw/Et789AQ2F59YKEnSzQudo='
+    // eslint-disable-next-line max-len
     const bip322P2SHInP2WPKHSig = 'AkgwRQIhAMd2wZSY3x0V9Kr/NClochoTXcgDaGl3OObOR17yx3QQAiBVWxqNSS+CKen7bmJTG6YfJjsggQ4Fa2RHKgBKrdQQ+gEhAxa5UDdQCHSQHfKQv14ybcYm1C9y6b12xAuukWzSnS+w'
+    // eslint-disable-next-line max-len
     const bip322P2WPKHSig = 'AkcwRAIgM2gBAQqvZX15ZiysmKmQpDrG83avLIT492QBzLnQIxYCIBaTpOaD20qRlEylyxFSeEA2ba9YOixpX8z46TSDtS40ASECx/EgAxlkQpQ9hYjgGu6EBCPMVPwVIVJqO4XCsMvViHI='
     const bip322P2TRSig = 'AUHd69PrJQEv+oKTfZ8l+WROBHuy9HKrbFCJu7U1iK2iiEy1vMU5EfMtjc+VSHM7aU0SDbak5IUZRVno2P5mjSafAQ=='
 
@@ -34,7 +36,9 @@ describe('BIP137 Test', () => {
   })
   it('Throw when given invalid BIP-137 signature', () => {
     const message = 'Hello World'
-    const bip137Sig = Buffer.from('IAtVrymJqo43BCt9f7Dhl6ET4Gg3SmhyvdlW6wn9iWc9PweD7tNM5+qw7xE9/bzlw/Et789AQ2F59YKEnSzQudo=', 'base64')
+    const bip137Sig = Buffer.from(
+      'IAtVrymJqo43BCt9f7Dhl6ET4Gg3SmhyvdlW6wn9iWc9PweD7tNM5+qw7xE9/bzlw/Et789AQ2F59YKEnSzQudo=', 'base64',
+    )
     // BIP-137 signature with extra or 1 less bytes
     const bip137SigTooLong = Buffer.concat([bip137Sig, Buffer.from([1])])
     const bip137SigTooShort = Buffer.from(bip137Sig).subarray(1)

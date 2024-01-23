@@ -2,25 +2,14 @@ import { expect } from 'chai'
 import { decodeScriptSignature } from '../../src/bitcoinjs'
 import * as fixtures from './signature.json'
 
+// eslint-disable-next-line max-len
 // Test copied from https://github.com/bitcoinjs/bitcoinjs-lib/blob/5d2ff1c61165932e2814d5f37630e6720168561c/test/script_signature.spec.ts
 describe('Decode Script Signatures', () => {
 
-  function fromRaw (signature: { r: string; s: string }): Buffer {
-    return Buffer.concat(
-      [Buffer.from(signature.r, 'hex'), Buffer.from(signature.s, 'hex')],
-      64,
-    )
-  }
-
-  function toRaw (signature: Buffer): {
-        r: string;
-        s: string;
-    } {
-    return {
-      r: signature.slice(0, 32).toString('hex'),
-      s: signature.slice(32, 64).toString('hex'),
-    }
-  }
+  const toRaw = (signature: Buffer): { r: string, s: string } => ({
+    r: signature.slice(0, 32).toString('hex'),
+    s: signature.slice(32, 64).toString('hex'),
+  })
 
   fixtures.valid.forEach(f => {
     it('Decodes ' + f.hex, () => {
@@ -33,7 +22,7 @@ describe('Decode Script Signatures', () => {
   fixtures.invalid.forEach(f => {
     it('Throws on ' + f.hex, () => {
       const buffer = Buffer.from(f.hex, 'hex')
-      expect(decodeScriptSignature.bind(decodeScriptSignature, buffer)).to.throws(new RegExp(f.exception))
+      expect(decodeScriptSignature.bind(decodeScriptSignature, buffer)).to.throws(new RegExp(f.exception, 'u'))
     })
   })
 

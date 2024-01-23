@@ -18,7 +18,11 @@ describe('VarStr Test', () => {
   it('Encode and decode multiple VarStr within the same buffer correctly', () => {
     const toEncode = 'Hello World'
     const toEncodeBuffer = Buffer.from(toEncode, 'ascii')
-    const encodedVarStrX2 = Buffer.concat([VarStr.encode(toEncodeBuffer), VarStr.encode(toEncodeBuffer)]) // Encode the string twice
+    // Encode the string twice
+    const encodedVarStrX2 = Buffer.concat([
+      VarStr.encode(toEncodeBuffer),
+      VarStr.encode(toEncodeBuffer),
+    ])
     const decodedStr = VarStr.decode(encodedVarStrX2).toString('ascii')
     expect(decodedStr).to.equal(toEncode) // Should still work
   })
