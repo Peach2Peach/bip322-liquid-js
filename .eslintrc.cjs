@@ -257,10 +257,10 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.spec.ts', 'test/**/*.ts', '**/*.cjs'],
+      files: ['**/*.test.ts', 'test/**/*.ts', '**/*.cjs'],
       rules: {
         'no-magic-numbers': 'off',
-        'max-lines-per-function': ['error', 240],
+        'max-lines-per-function': ['warn', 500],
         'max-statements': ['error', 30],
         'no-unused-expressions': 'off',
       },

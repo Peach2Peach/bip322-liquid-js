@@ -1,13 +1,13 @@
 # BIP322-JS
 
-![Unit Test Status](https://github.com/ACken2/bip322-js/actions/workflows/unit_test.yml/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/ACken2/bip322-js/badge.svg?branch=main)](https://coveralls.io/github/ACken2/bip322-js?branch=main)
+![Unit Test Status](https://github.com/Peach2Peach/bip322-liquid-js/actions/workflows/unit_test.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/Peach2Peach/bip322-liquid-js/badge.svg?branch=main)](https://coveralls.io/github/Peach2Peach/bip322-liquid-js?branch=main)
 
 A Javascript library that provides utility functions related to the BIP-322 signature scheme for liquid.
 
 ## Limitations
 
-Only P2WPKH, P2PKH, P2WSH, P2SH are supported in this library.
+Only P2WPKH, P2PKH are supported so far in this library.
 
 ## Supported Features
 
@@ -23,7 +23,7 @@ const { BIP322, Signer, Verifier } = require('bip322-js');
 
 // Signing a BIP-322 signature with a private key
 const privateKey = 'L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k';
-const address = 'bc1q9vza2e8x573nczrlzms0wvx3gsqjx7vavgkx0l';
+const address = 'ex1q9vza2e8x573nczrlzms0wvx3gsqjx7vaxpt7zl';
 const message = 'Hello World';
 const signature = Signer.sign(privateKey, address, message);
 console.log(signature);

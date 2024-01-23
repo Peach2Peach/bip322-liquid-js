@@ -1,115 +1,119 @@
-// Import dependencies
-import { expect } from 'chai'
-import * as bitcoin from 'bitcoinjs-lib'
 import * as bitcoinMessage from 'bitcoinjs-message'
+import { expect } from 'chai'
+import { networks, payments } from 'liquidjs-lib'
+import { Signer, Verifier } from '../src'
+import { ECPair, generateTestAddresses } from './testHelpers/generateTestAddresses'
+import {
+  expectedSignature,
+  expectedSignatureAlt,
+  message,
+  privateKey,
+  privateKeyTestnet,
+} from './testHelpers/testVectors'
 
-// Import module to be tested
-import { Signer } from '../src'
 
 describe('Signer Test', () => {
+  const testAddresses = generateTestAddresses()
 
-  it('Can sign legacy P2PKH signature', () => {
-    // Arrange
-    const privateKey = 'L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k'
-    const privateKeyTestnet = 'cTrF79uahxMC7bQGWh2931vepWPWqS8KtF8EkqgWwv3KMGZNJ2yP' // Equivalent to L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k
-    const address = '14vV3aCHBeStb5bkenkNHbe2YAFinYdXgc'
-    const addressTestnet = 'mjSSLdHFzft9NC5NNMik7WrMQ9rRhMhNpT'
-    const message = 'Hello World'
+  it('Can sign BIP-137 P2PKH using for liquid', () => {
+    const address = testAddresses.liquid.p2pkh
+    const signature = Signer.sign(privateKey, address, message, networks.liquid)
 
-    // Act
-    const signature = Signer.sign(privateKey, address, message)
-    const signatureTestnet = Signer.sign(privateKeyTestnet, addressTestnet, message, bitcoin.networks.testnet)
-
-    // Assert
     expect(bitcoinMessage.verify(message, address, signature)).to.be.true
-    expect(bitcoinMessage.verify(message, addressTestnet, signatureTestnet)).to.be.true
+    expect(signature.toString('base64')).to.equal(expectedSignature)
   })
-  it('Can sign BIP-322 signature using nested segwit address', () => {
-    // Arrange
-    const privateKey = 'KwTbAxmBXjoZM3bzbXixEr9nxLhyYSM4vp2swet58i19bw9sqk5z' // Private key of "3HSVzEhCFuH9Z3wvoWTexy7BMVVp3PjS6f"
-    const privateKeyTestnet = 'cMpadsm2xoVpWV5FywY5cAeraa1PCtSkzrBM45Ladpf9rgDu6cMz' // Equivalent to 'KwTbAxmBXjoZM3bzbXixEr9nxLhyYSM4vp2swet58i19bw9sqk5z'
-    const address = '3HSVzEhCFuH9Z3wvoWTexy7BMVVp3PjS6f'
-    const addressTestnet = '2N8zi3ydDsMnVkqaUUe5Xav6SZqhyqEduap'
-    const message = 'Hello World'
-    const expectedSignature = 'AkgwRQIhAMd2wZSY3x0V9Kr/NClochoTXcgDaGl3OObOR17yx3QQAiBVWxqNSS+CKen7bmJTG6YfJjsggQ4Fa2RHKgBKrdQQ+gEhAxa5UDdQCHSQHfKQv14ybcYm1C9y6b12xAuukWzSnS+w'
+  it('Can sign BIP-137 P2PKH using for liquid (testnet)', () => {
+    const address = testAddresses.testnet.p2pkh
+    const signature = Signer.sign(privateKeyTestnet, address, message, networks.testnet)
 
-    // Act
-    const signature = Signer.sign(privateKey, address, message)
-    const signatureTestnet = Signer.sign(privateKeyTestnet, addressTestnet, message, bitcoin.networks.testnet)
-
-    // Assert
-    expect(signature).to.equal(expectedSignature)
-    expect(signatureTestnet).to.equal(expectedSignature)
+    expect(bitcoinMessage.verify(message, address, signature)).to.be.true
+    expect(signature.toString('base64')).to.equal(expectedSignature)
   })
-  it('Can sign BIP-322 signature using native segwit address', () => {
-    // Arrange
-    // Test vector listed at https://github.com/bitcoin/bitcoin/blob/29b28d07fa958b89e1c7916fda5d8654474cf495/src/test/util_tests.cpp#L2713
-    const privateKey = 'L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k'
-    const privateKeyTestnet = 'cTrF79uahxMC7bQGWh2931vepWPWqS8KtF8EkqgWwv3KMGZNJ2yP' // Equivalent to L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k
-    const address = 'bc1q9vza2e8x573nczrlzms0wvx3gsqjx7vavgkx0l'
-    const addressTestnet = 'tb1q9vza2e8x573nczrlzms0wvx3gsqjx7vaxwd45v'
-    const message = 'Hello World'
-    const expectedSignature = 'AkgwRQIhAOzyynlqt93lOKJr+wmmxIens//zPzl9tqIOua93wO6MAiBi5n5EyAcPScOjf1lAqIUIQtr3zKNeavYabHyR8eGhowEhAsfxIAMZZEKUPYWI4BruhAQjzFT8FSFSajuFwrDL1Yhy'
+  it('Can sign BIP-322 P2WPKH using for liquid', () => {
+    const address = testAddresses.liquid.p2wpkh
+    const signature = Signer.sign(privateKey, address, message, networks.liquid)
 
-    // Act
-    const signature = Signer.sign(privateKey, address, message)
-    const signatureTestnet = Signer.sign(privateKeyTestnet, addressTestnet, message, bitcoin.networks.testnet)
-
-    // Assert
-    expect(signature).to.equal(expectedSignature)
-    expect(signatureTestnet).to.equal(expectedSignature)
+    expect(Verifier.verifySignature(address, message, signature.toString('base64'))).to.be.true
+    expect(signature.toString('base64')).to.equal(expectedSignatureAlt)
   })
-  it('Can sign BIP-322 using single-key-spend taproot address', () => {
-    // Arrange
-    // Test vector listed at https://github.com/bitcoin/bitcoin/blob/29b28d07fa958b89e1c7916fda5d8654474cf495/src/test/util_tests.cpp#L2747
-    const privateKey = 'L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k'
-    const privateKeyTestnet = 'cTrF79uahxMC7bQGWh2931vepWPWqS8KtF8EkqgWwv3KMGZNJ2yP' // Equivalent to L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k
-    const address = 'bc1ppv609nr0vr25u07u95waq5lucwfm6tde4nydujnu8npg4q75mr5sxq8lt3'
-    const addressTestnet = 'tb1ppv609nr0vr25u07u95waq5lucwfm6tde4nydujnu8npg4q75mr5s3g3s37'
-    const message = 'Hello World'
-    const expectedSignature = 'AUHd69PrJQEv+oKTfZ8l+WROBHuy9HKrbFCJu7U1iK2iiEy1vMU5EfMtjc+VSHM7aU0SDbak5IUZRVno2P5mjSafAQ=='
+  it('Can sign BIP-322 P2WPKH using for liquid (testnet)', () => {
+    const address = testAddresses.testnet.p2wpkh
+    const signature = Signer.sign(privateKeyTestnet, address, message, networks.testnet)
 
-    // Act
-    const signature = Signer.sign(privateKey, address, message)
-    const signatureTestnet = Signer.sign(privateKeyTestnet, addressTestnet, message, bitcoin.networks.testnet)
-
-    // Assert
-    expect(signature).to.equal(expectedSignature)
-    expect(signatureTestnet).to.equal(expectedSignature)
+    expect(Verifier.verifySignature(address, message, signature.toString('base64'))).to.be.true
+    expect(signature.toString('base64')).to.equal(expectedSignatureAlt)
   })
+
+  it('Can sign BIP-137 P2PKH (confidential) using for liquid', () => {
+    const address = testAddresses.liquid.p2pkhConfidential
+    const signature = Signer.sign(privateKey, address, message, networks.liquid)
+
+    expect(bitcoinMessage.verify(message, address, signature)).to.be.true
+    expect(signature.toString('base64')).to.equal(expectedSignature)
+  })
+  it('Can sign BIP-137 P2PKH (confidential) using for liquid (testnet)', () => {
+    const address = testAddresses.testnet.p2pkhConfidential
+    const signature = Signer.sign(privateKeyTestnet, address, message, networks.testnet)
+
+    expect(bitcoinMessage.verify(message, address, signature)).to.be.true
+    expect(signature.toString('base64')).to.equal(expectedSignature)
+  })
+  it('Can sign BIP-322 P2WPKH (confidential) using for liquid', () => {
+    const address = testAddresses.liquid.p2wpkhConfidential
+    const signature = Signer.sign(privateKey, address, message, networks.liquid)
+
+    expect(Verifier.verifySignature(address, message, signature.toString('base64'))).to.be.true
+    expect(signature.toString('base64')).to.equal(expectedSignatureAlt)
+  })
+  it('Can sign BIP-322 P2WPKH (confidential) using for liquid (testnet)', () => {
+    const address = testAddresses.testnet.p2wpkhConfidential
+    const signature = Signer.sign(privateKeyTestnet, address, message, networks.testnet)
+
+    expect(Verifier.verifySignature(address, message, signature.toString('base64'))).to.be.true
+    expect(signature.toString('base64')).to.equal(expectedSignatureAlt)
+  })
+
   it('Throw when the provided private key cannot derive the given signing address', () => {
-    // Arrange
-    const privateKey = 'L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k'
-    const p2pkhAddressWrong = '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2'
-    const p2shAddressWrong = '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy'
-    const p2wpkhAddressWrong = 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq'
-    const p2trAddressWrong = 'bc1p5d7rjq7g6rdk2yhzks9smlaqtedr4dekq08ge8ztwac72sfr9rusxg3297'
-    const message = 'Hello World'
+    const p2wpkhAddressWrong = 'ex1q2p93defpj4flwp4a5e0y3vupudqgs6kh5txw9z'
+    const p2pkhAddressWrong = 'Q4aw8qnw66T77GwnRyhSiAPD9h6wph9MxK'
+    const p2pkhConfidentialWrong = 'Q4aw8qnw66T77GwnRyhSiAPD9h6wph9MxK'
 
-    // Act
-    const signP2PKH = Signer.sign.bind(Signer, privateKey, p2pkhAddressWrong, message)
-    const signP2SH = Signer.sign.bind(Signer, privateKey, p2shAddressWrong, message)
     const signP2WPKH = Signer.sign.bind(Signer, privateKey, p2wpkhAddressWrong, message)
-    const signP2TR = Signer.sign.bind(Signer, privateKey, p2trAddressWrong, message)
+    const signP2PKH = Signer.sign.bind(Signer, privateKey, p2pkhAddressWrong, message)
+    const signP2PKHConfidential = Signer.sign.bind(Signer, privateKey, p2pkhConfidentialWrong, message)
 
-    // Assert
-    expect(signP2PKH).to.throws(`Invalid private key provided for signing message for ${p2pkhAddressWrong}.`)
-    expect(signP2SH).to.throws(`Invalid private key provided for signing message for ${p2shAddressWrong}.`)
     expect(signP2WPKH).to.throws(`Invalid private key provided for signing message for ${p2wpkhAddressWrong}.`)
-    expect(signP2TR).to.throws(`Invalid private key provided for signing message for ${p2trAddressWrong}.`)
+    expect(signP2PKH).to.throws(`Invalid private key provided for signing message for ${p2pkhAddressWrong}.`)
+
+    expect(signP2PKHConfidential).to.throws(
+      `Invalid private key provided for signing message for ${p2pkhConfidentialWrong}.`,
+    )
   })
 
   it('Throw when attempting to sign BIP-322 signature using unsupported address type', () => {
-    // Arrange
-    const privateKey = 'L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k'
+    const signer = ECPair.fromWIF(privateKey, networks.liquid)
+    const blindkey = ECPair.fromWIF(privateKey, networks.liquid).publicKey
+    const p2shAddress = payments.p2sh({
+      redeem: payments.p2wpkh({
+        pubkey: signer.publicKey,
+        network: networks.liquid,
+      }),
+      network: networks.liquid,
+    }).address!
+    const p2shConfidentialAddress = payments.p2sh({
+      address: p2shAddress,
+      blindkey,
+      network: networks.liquid,
+    }).address!
     const p2wshAddress = 'bc1qeklep85ntjz4605drds6aww9u0qr46qzrv5xswd35uhjuj8ahfcqgf6hak'
-    const message = 'Hello World'
 
-    // Act
     const signP2WSH = Signer.sign.bind(Signer, privateKey, p2wshAddress, message)
+    const signP2SH = Signer.sign.bind(Signer, privateKey, p2shAddress, message)
+    const signP2SHConfidential = Signer.sign.bind(Signer, privateKey, p2shConfidentialAddress, message)
 
-    // Assert
     expect(signP2WSH).to.throws('Unable to sign BIP-322 message for unsupported address type.')
+    expect(signP2SH).to.throws('Unable to sign BIP-322 message for unsupported address type.')
+    expect(signP2SHConfidential).to.throws('Unable to sign BIP-322 message for unsupported address type.')
   })
 
 })

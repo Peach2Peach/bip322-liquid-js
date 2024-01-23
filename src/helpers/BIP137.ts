@@ -1,6 +1,8 @@
 import * as bitcoinMessage from 'bitcoinjs-message'
 import ecc from 'secp256k1'
 
+const BYTE_LENGTH_BIP137_SIGNATURE = 65
+
 /**
  * Class that implement BIP137-related utility functions.
  */
@@ -14,12 +16,7 @@ class BIP137 {
   public static isBIP137Signature (signature: string) {
     // Check if the provided signature satisified the format of a BIP-137 signature
     const signatureBuffer = Buffer.from(signature, 'base64')
-    if (signatureBuffer.byteLength === 65) {
-      return true
-    }
-
-    return false
-
+    return signatureBuffer.byteLength === BYTE_LENGTH_BIP137_SIGNATURE
   }
 
   /**
@@ -34,7 +31,12 @@ class BIP137 {
     // Decode the provided BIP-137 signature
     const signatureDecoded = this.decodeSignature(Buffer.from(signature, 'base64'))
     // Recover the public key
-    return Buffer.from(ecc.ecdsaRecover(signatureDecoded.signature, signatureDecoded.recovery, messageHash, signatureDecoded.compressed))
+    return Buffer.from(ecc.ecdsaRecover(
+      signatureDecoded.signature,
+      signatureDecoded.recovery,
+      messageHash,
+      signatureDecoded.compressed,
+    ))
   }
 
   /**
