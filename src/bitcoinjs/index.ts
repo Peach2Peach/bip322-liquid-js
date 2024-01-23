@@ -1,3 +1,3 @@
-import { decodeScriptSignature } from "./DecodeScriptSignature";
+import { decodeScriptSignature } from './DecodeScriptSignature'
 
-export { decodeScriptSignature };
+export { decodeScriptSignature }
