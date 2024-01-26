@@ -37,24 +37,5 @@ export const generateAddresses = (privKey: string, network: networks.Network) =>
 export const generateTestAddresses = () => ({
   liquid: generateAddresses(privateKey, networks.liquid),
   testnet: generateAddresses(privateKeyTestnet, networks.testnet),
+  regtest: generateAddresses(privateKeyTestnet, networks.regtest),
 })
-
-// {
-//   p2wpkh: 'ex1qmh0un07z5gmv69yg687wglhgj2mscysh2sw6k2',
-//   p2pkh: 'QHVYYerCaH8zAXgKnw5H3YXQ3RgcCXmh8f',
-//   p2wsh: 'ex1qc0a5g32xyjm85el94l3pfsjngu887786t9m6pv5stdrzmpm6nr0stjup5x',
-//   p2sh: 'H36FU3csPfSEZj2RyEDkmsgBWSwgDcLBAR',
-//   p2wpkhConfidential: 'ex1qmh0un07z5gmv69yg687wglhgj2mscysh2sw6k2',
-//   p2pkhConfidential: 'QHVYYerCaH8zAXgKnw5H3YXQ3RgcCXmh8f'
-// }
-
-
-// {
-//   p2wpkh: 'tex1qfcjnukn8u7mwz0n7cxy5fjv5zpj57m8muv8093',
-//   p2pkh: 'FcHumbpUerNFJHsDdDejoqvk8kDjxqx3TB',
-//   p2wsh: 'tex1qf6gjuuu3ys47juscesy76dw6w9at4stla50tthasnfu3vzny2hqqfyq9gm',
-//   p2sh: '8ms2towULZV7XoUxwFs7uwwESgQnjHB3Yx',
-//   p2wpkhConfidential: 'tex1qfcjnukn8u7mwz0n7cxy5fjv5zpj57m8muv8093',
-//   p2pkhConfidential: 'FcHumbpUerNFJHsDdDejoqvk8kDjxqx3TB'
-// }
-
