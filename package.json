@@ -21,7 +21,7 @@
         "typescript",
         "no-WASM"
     ],
-    "author": "Peac Sàrl <development@peachbitcoin.com>",
+    "author": "Peach Sàrl <development@peachbitcoin.com>",
     "repository": "github:Peach2Peach/bip322-liquid-js",
     "license": "MIT",
     "devDependencies": {
