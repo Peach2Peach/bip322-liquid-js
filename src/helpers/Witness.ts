@@ -48,7 +48,7 @@ class Witness {
     const witnessCount = VarInt.decode(witnessToDecode)
     // Slice the VarInt in front of the witness buffer before decoding each witness
     const varIntLength = VarInt.encode(witnessCount).byteLength
-    witnessToDecode = witnessToDecode.subarray(varIntLength)
+    witnessToDecode = Buffer.from(witnessToDecode.subarray(varIntLength))
     // Loop for each witness encoded
     for (let i = 0; i < witnessCount; i++) {
       // Read a VarStr from the remaining buffer
@@ -57,7 +57,7 @@ class Witness {
       witnessDecoded.push(witness)
       // Slice the read witness off witnessToDecode before next iteration
       const witnessLength = VarStr.encode(witness).byteLength
-      witnessToDecode = witnessToDecode.subarray(witnessLength)
+      witnessToDecode = Buffer.from(witnessToDecode.subarray(witnessLength))
     }
     // Return deserialized witness data
     return witnessDecoded

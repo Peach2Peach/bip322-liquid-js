@@ -60,7 +60,7 @@ class Verifier {
         const hashedLockingScript = liquid.crypto.hash160(lockingScript)
         // For nested segwit (P2SH-P2WPKH) address
         // the hashed locking script is located from the 3rd byte to the last 2nd byte as OP_HASH160 <HASH> OP_EQUAL
-        const hashedLockingScriptInScriptPubKey = scriptPubKey.subarray(2, -1)
+        const hashedLockingScriptInScriptPubKey = Buffer.from(scriptPubKey.subarray(2, -1))
         // Check if the P2SH locking script OP_HASH160 <HASH> OP_EQUAL is satisified
         if (Buffer.compare(hashedLockingScript, hashedLockingScriptInScriptPubKey) !== 0) {
           // Reject signature if the hashed locking script is different
@@ -72,7 +72,7 @@ class Verifier {
         // Compute the hash that correspond to the toSignTx
         hashToSign = this.getHashForSigP2WPKH(toSignTx)
         // For native segwit address, the hashed public key is located from the 3rd to the end as OP_0 <HASH>
-        const hashedPubkeyInScriptPubkey = scriptPubKey.subarray(2)
+        const hashedPubkeyInScriptPubkey = Buffer.from(scriptPubKey.subarray(2))
         // Check if OP_HASH160(publicKey) === hashedPubkeyInScriptPubkey
         if (Buffer.compare(hashedPubkey, hashedPubkeyInScriptPubkey) !== 0) {
           return false // Reject signature if the hashed public key did not match
@@ -144,7 +144,7 @@ class Verifier {
     // eslint-disable-next-line max-len
     // Reference: https://github.com/bitcoinjs/bitcoinjs-lib/blob/1a9119b53bcea4b83a6aa8b948f0e6370209b1b4/ts_src/psbt.ts#L1654
     const signingScript = liquid.payments.p2pkh({
-      hash: toSignTx.data.inputs[0].witnessUtxo.script.subarray(2),
+      hash: Buffer.from(toSignTx.data.inputs[0].witnessUtxo.script.subarray(2)),
     }).output
     // Return computed transaction hash to be signed
     return toSignTx.extractTransaction().hashForWitnessV0(

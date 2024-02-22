@@ -32,7 +32,7 @@ class VarStr {
     // Get the length of the VarInt used to represent the length of the string
     const lengthByteLength = VarInt.encode(length).byteLength
     // Return from lengthByteLength to (length + lengthByteLength) in the buffer which contain the actual string
-    return v.subarray(lengthByteLength, length + lengthByteLength)
+    return Buffer.from(v.subarray(lengthByteLength, length + lengthByteLength))
   }
 
 }
